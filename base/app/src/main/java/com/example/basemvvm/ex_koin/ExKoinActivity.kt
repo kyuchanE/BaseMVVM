@@ -2,10 +2,13 @@ package com.example.basemvvm.ex_koin
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import com.example.basemvvm.R
+import com.example.basemvvm.model.BasicApi
 import com.example.basemvvm.utils.L
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
+import org.koin.experimental.property.inject
 import org.koin.ext.getOrCreateScope
 import org.koin.ext.scope
 
@@ -25,6 +28,8 @@ class ExKoinActivity : AppCompatActivity() {
     val scopeC : C = scopeForA.get()
 //    val scopeB : B = scopeA.scope.get()
 //    val scopeC : C = scopeA.scope.get()
+
+    val retrofitClient : BasicApi by inject()
 
     // single, factory 의 의존성 주입 메서드로 by inject() / get() 사용방법 입니다.
     //
@@ -56,6 +61,23 @@ class ExKoinActivity : AppCompatActivity() {
 
         L.d("after close() scopeB name is ${scopeB.name()}, scope close ? : ${scopeForA.closed}")
         L.d("after close() scopeC name is ${scopeC.name()}")
+
+        /**
+         * Retrofit2 테스트
+         */
+        findViewById<Button>(R.id.btn_retrofit).setOnClickListener {
+            retrofitClient.get(
+                    "",
+                    mapOf(),
+                    mapOf()
+            ).doOnError {
+
+            }.doOnNext {
+
+            }.doFinally {
+
+            }
+        }
 
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Build
 import com.example.basemvvm.BuildConfig
 import com.example.basemvvm.custom.lib.CustomPersistentCookieJar
+import com.example.basemvvm.model.BasicApi
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
@@ -13,6 +14,8 @@ import com.ihsanbal.logging.LoggingInterceptor
 import com.itkacher.okhttpprofiler.OkHttpProfilerInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.internal.platform.Platform
+import org.koin.android.ext.android.inject
+import org.koin.experimental.property.inject
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -78,7 +81,7 @@ object API {
         okHttpClientBuilder.build()
     }
 
-//    val basicApi by lazy { build().create(BasicApi::class.java) }
+    val basicApi by lazy { build().create(BasicApi::class.java) }
 
     fun init(ctx: Context) {
         context = ctx

@@ -8,9 +8,7 @@ import android.webkit.WebView
 import androidx.multidex.MultiDexApplication
 import com.blankj.utilcode.util.Utils
 import com.example.basemvvm.BuildConfig
-import com.example.basemvvm.ex_koin.moduleA
-import com.example.basemvvm.ex_koin.moduleB
-import com.example.basemvvm.ex_koin.typeQualifierModule
+import com.example.basemvvm.ex_koin.*
 import com.example.basemvvm.utils.API
 import com.facebook.stetho.Stetho
 import com.orhanobut.hawk.Hawk
@@ -60,7 +58,8 @@ class BaseApplication: MultiDexApplication(), Application.ActivityLifecycleCallb
             modules(
                     moduleA,
                     moduleB,
-                    typeQualifierModule
+                    typeQualifierModule,
+                    retrofitModule
             )
         }
     }

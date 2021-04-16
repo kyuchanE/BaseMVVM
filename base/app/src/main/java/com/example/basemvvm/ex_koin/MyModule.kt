@@ -1,7 +1,13 @@
 package com.example.basemvvm.ex_koin
 
+import com.example.basemvvm.BuildConfig
+import com.example.basemvvm.model.BasicApi
+import com.example.basemvvm.utils.API
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 
 // Module 에서 제공할 의존성(객체)들의 클래스 구조를 선언
 
@@ -62,6 +68,13 @@ val typeQualifierModule = module {
         scoped { C() }
     }
 
+}
+
+val retrofitModule = module {
+
+    single<BasicApi> {
+        API.basicApi
+    }
 }
 
 
