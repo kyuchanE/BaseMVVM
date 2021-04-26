@@ -1,10 +1,13 @@
 package com.example.basemvvm.base
 
 import androidx.lifecycle.ViewModel
+import com.example.basemvvm.model.BasicApi
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-open class BaseViewModel : ViewModel() {
+open class BaseViewModel() : ViewModel() {
+
+    private lateinit var retrofitClient: BasicApi
 
     /**
      * RxJava 의 observing 을 위한 부분.
@@ -30,12 +33,18 @@ open class BaseViewModel : ViewModel() {
 
     /**
      * ViewModel 은 View 와의 생명주기를 공유하기 때문에
-     * View 가 부서질 때 ViewMode l의 onCleared()가 호출되게 되며,
+     * View 가 부서질 때 ViewModel 의 onCleared()가 호출되게 되며,
      * 그에 따라 옵저버블들이 전부 클리어 되게 됩니다.
      */
     override fun onCleared() {
         compositeDisposable.clear()
         super.onCleared()
     }
+
+    fun setRetrofit(client: BasicApi) {
+        retrofitClient = client
+    }
+
+    protected fun getRetrofit(): BasicApi = retrofitClient
 
 }

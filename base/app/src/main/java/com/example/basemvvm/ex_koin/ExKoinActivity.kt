@@ -2,8 +2,14 @@ package com.example.basemvvm.ex_koin
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
+import android.widget.EditText
+import androidx.lifecycle.Observer
 import com.example.basemvvm.R
+import com.example.basemvvm.base.BaseActivity
+import com.example.basemvvm.base.BaseViewModel
+import com.example.basemvvm.databinding.ActivityExKoinBinding
 import com.example.basemvvm.model.BasicApi
 import com.example.basemvvm.utils.L
 import org.koin.android.ext.android.get
@@ -12,7 +18,10 @@ import org.koin.experimental.property.inject
 import org.koin.ext.getOrCreateScope
 import org.koin.ext.scope
 
-class ExKoinActivity : AppCompatActivity() {
+class ExKoinActivity : BaseActivity<ActivityExKoinBinding>() {
+
+    // dataBinding
+    override val layoutId: Int = R.layout.activity_ex_koin
 
     // inject() 의존성 주입 - Lazy 방식
     val bb_inject1 : BB by inject()	// inject Type 유형 1 - Type by inject()
@@ -26,10 +35,11 @@ class ExKoinActivity : AppCompatActivity() {
     val scopeForA = scopeA.getOrCreateScope()
     val scopeB : B = scopeForA.get()
     val scopeC : C = scopeForA.get()
-//    val scopeB : B = scopeA.scope.get()
-//    val scopeC : C = scopeA.scope.get()
+    //    val scopeB : B = scopeA.scope.get()
+    //    val scopeC : C = scopeA.scope.get()
 
     val retrofitClient : BasicApi by inject()
+    val viewModel : ExKoinVM = get()
 
     // single, factory 의 의존성 주입 메서드로 by inject() / get() 사용방법 입니다.
     //
@@ -44,9 +54,11 @@ class ExKoinActivity : AppCompatActivity() {
     //    inject - Lazy 방식의 주입, 해당 객체가 사용되는 시점에 의존성 주입
     //
     //    get - 바로 주입, 해당 코드 실행시간에 바로 객체를 주입
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_ex_koin)
+
+        viewModel.setRetrofit(retrofitClient)
 
         L.d("bb_inject1 name is ${bb_inject1.name()}")
         L.d("bb_inject2 name is ${bb_inject2.name()}")
@@ -63,21 +75,35 @@ class ExKoinActivity : AppCompatActivity() {
         L.d("after close() scopeC name is ${scopeC.name()}")
 
         /**
-         * Retrofit2 테스트
+         *  ViewModel LiveData Observe
+         *  사용 시 - kotlin 1.3.x 버전까지는 Observer을 명시해야 한다.
          */
-        findViewById<Button>(R.id.btn_retrofit).setOnClickListener {
-            retrofitClient.get(
-                    "",
-                    mapOf(),
-                    mapOf()
-            ).doOnError {
+        viewModel.lottoLiveData.observe(this, Observer {
+            binding.tvDrwtno.text = it.get("drwtNo1").toString()
+        })
 
-            }.doOnNext {
-
-            }.doFinally {
-
-            }
-        }
+        /**
+         *  ViewModel LiveData Observe
+         *  kotlin 1.4.x 버전부터는 SAM 지원으로 아래와 같다.
+         */
+//        viewModel.lottoLiveData.observe(this) {
+//
+//        }
 
     }
+
+    override fun onBtnEvents(v: View) {
+        super.onBtnEvents(v)
+        when (v.id) {
+            // Retrofit2 테스트
+            R.id.btn_retrofit -> {
+                L.d("ExKoinActivity btn_retrofit OnClick >> ")
+                val drwno = binding.etDrwno.text.toString()
+                if (drwno.isNotEmpty()) {
+                    viewModel.testApi(drwno)
+                }
+            }
+        }
+    }
+
 }

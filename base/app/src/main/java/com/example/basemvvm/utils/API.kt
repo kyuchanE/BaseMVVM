@@ -29,6 +29,7 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
+@SuppressLint("StaticFieldLeak")
 object API {
 
     private const val PRINT_LOG = BuildConfig.DEV // 로그 출력여부

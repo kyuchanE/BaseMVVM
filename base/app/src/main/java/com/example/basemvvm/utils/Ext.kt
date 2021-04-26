@@ -17,6 +17,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
+import com.example.basemvvm.base.BaseActivity
 import com.example.basemvvm.custom.glide.GlideApp
 import com.google.gson.*
 import com.jaychang.st.SimpleText
@@ -115,7 +116,7 @@ fun <T : ViewDataBinding> Activity.bindView(layoutId: Int, parent: ViewGroup? = 
     return DataBindingUtil.inflate(layoutInflater, layoutId, parent, attachToRoot)
 }
 
-//fun ViewDataBinding.setOnEvents(activity: BaseActivity<*>? = null) = root.setOnEvents(activity)
+fun ViewDataBinding.setOnEvents(activity: BaseActivity<*>? = null) = root.setOnEvents(activity)
 
 //fun ViewDataBinding.setOnMenuEvents(baseActivity: BaseActivity<*>? = null): ViewDataBinding {
 //    (baseActivity ?: root.activity)?.let { h ->
@@ -136,17 +137,17 @@ fun <T : ViewDataBinding> Activity.bindView(layoutId: Int, parent: ViewGroup? = 
 
 val View.isClick get() = tag == "click"
 
-//val View.activity: BaseActivity<*>?
-//    get() {
-//        var ctx = context
-//        while (ctx is ContextWrapper) {
-//            if (ctx is BaseActivity<*>) {
-//                return ctx
-//            }
-//            ctx = ctx.baseContext
-//        }
-//        return null
-//    }
+val View.activity: BaseActivity<*>?
+    get() {
+        var ctx = context
+        while (ctx is ContextWrapper) {
+            if (ctx is BaseActivity<*>) {
+                return ctx
+            }
+            ctx = ctx.baseContext
+        }
+        return null
+    }
 
 val ViewGroup.views: List<View>
     get() {
@@ -182,29 +183,29 @@ val ViewGroup.eventViews: List<View>
         return result
     }
 
-//fun View.setOnEvents(baseActivity: BaseActivity<*>? = null): View {
-//    var views = mutableListOf<View>()
-//
-//    if (this is ViewGroup) views.addAll(eventViews)
-//    else views.add(this)
-//
-//    val handler = baseActivity ?: activity
-//    handler?.let { h ->
-//        views.filter { it.id != View.NO_ID }.forEach {
-//            when (it) {
-//                is CompoundButton -> {
-//                    it.setOnCheckedChangeListener(h::onRxCheckedEvents)
-//                    it.setOnClickListener(h::onRxBtnEvents)
-//                }
-//                is Button, is ImageButton, is CheckedTextView -> it.setOnClickListener(h::onRxBtnEvents)
-//            }
-//
-//            if (it.isClick) it.setOnClickListener(h::onRxBtnEvents)
-//        }
-//    }
-//
-//    return this
-//}
+fun View.setOnEvents(baseActivity: BaseActivity<*>? = null): View {
+    var views = mutableListOf<View>()
+
+    if (this is ViewGroup) views.addAll(eventViews)
+    else views.add(this)
+
+    val handler = baseActivity ?: activity
+    handler?.let { h ->
+        views.filter { it.id != View.NO_ID }.forEach {
+            when (it) {
+                is CompoundButton -> {
+                    it.setOnCheckedChangeListener(h::onRxCheckedEvents)
+                    it.setOnClickListener(h::onRxBtnEvents)
+                }
+                is Button, is ImageButton, is CheckedTextView -> it.setOnClickListener(h::onRxBtnEvents)
+            }
+
+            if (it.isClick) it.setOnClickListener(h::onRxBtnEvents)
+        }
+    }
+
+    return this
+}
 
 fun View.show(): View {
     visibility = View.VISIBLE

@@ -1,6 +1,7 @@
 package com.example.basemvvm.ex_koin
 
 import com.example.basemvvm.BuildConfig
+import com.example.basemvvm.base.BaseViewModel
 import com.example.basemvvm.model.BasicApi
 import com.example.basemvvm.utils.API
 import org.koin.core.qualifier.named
@@ -74,6 +75,13 @@ val retrofitModule = module {
 
     single<BasicApi> {
         API.basicApi
+    }
+}
+
+val viewModel = module {
+
+    factory {
+        ExKoinVM()
     }
 }
 
