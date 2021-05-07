@@ -14,6 +14,7 @@ import com.example.basemvvm.model.BasicApi
 import com.example.basemvvm.utils.L
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.experimental.property.inject
 import org.koin.ext.getOrCreateScope
 import org.koin.ext.scope
@@ -39,7 +40,13 @@ class ExKoinActivity : BaseActivity<ActivityExKoinBinding>() {
     //    val scopeC : C = scopeA.scope.get()
 
     val retrofitClient : BasicApi by inject()
-    val viewModel : ExKoinVM = get()
+//    val viewModel : ExKoinVM = get()
+
+    // Fragment -> 2개 이상의 View가 ViewModel을 공유할 경우, shareViewModel을 사용하면 됩니다.각각 by viewModel() 대신, by sharedViewModel()로 바꾸어 주입해줍니다.
+    // by viewModel이 아닌 by sharedViewModel을 사용함으로써 해당 뷰모델의 생성은 두번 되지 않고 Activity에서 생성한 뷰모델을 공유해서 사용한다.
+    //  val viewModel by sharedViewModel<MainViewModel>()
+
+    val viewModel : ExKoinVM by viewModel()     // by viewModel()  키워드를 이용하면 non-lazy 하게 주입 받을 수 있습니다.
 
     // single, factory 의 의존성 주입 메서드로 by inject() / get() 사용방법 입니다.
     //
@@ -74,21 +81,7 @@ class ExKoinActivity : BaseActivity<ActivityExKoinBinding>() {
         L.d("after close() scopeB name is ${scopeB.name()}, scope close ? : ${scopeForA.closed}")
         L.d("after close() scopeC name is ${scopeC.name()}")
 
-        /**
-         *  ViewModel LiveData Observe
-         *  사용 시 - kotlin 1.3.x 버전까지는 Observer을 명시해야 한다.
-         */
-        viewModel.lottoLiveData.observe(this, Observer {
-            binding.tvDrwtno.text = it.get("drwtNo1").toString()
-        })
-
-        /**
-         *  ViewModel LiveData Observe
-         *  kotlin 1.4.x 버전부터는 SAM 지원으로 아래와 같다.
-         */
-//        viewModel.lottoLiveData.observe(this) {
-//
-//        }
+        setDataObserve()
 
     }
 
@@ -104,6 +97,32 @@ class ExKoinActivity : BaseActivity<ActivityExKoinBinding>() {
                 }
             }
         }
+    }
+
+    /**
+     *  ViewModel LiveData
+     */
+    private fun setDataObserve() {
+
+        /**
+         *  ViewModel LiveData Observe
+         *  사용 시 - kotlin 1.3.x 버전까지는 Observer을 명시해야 한다.
+         */
+        viewModel.lottoLiveData.observe(this, Observer {
+            binding.drwtno1 = it.get("drwtNo1").toString()
+        })
+
+        viewModel.testLiveData.observe(this, Observer {
+            binding.num = it.toString()
+        })
+
+        /**
+         *  ViewModel LiveData Observe
+         *  kotlin 1.4.x 버전부터는 SAM 지원으로 아래와 같다.
+         */
+//        viewModel.lottoLiveData.observe(this) {
+//
+//        }
     }
 
 }

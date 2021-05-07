@@ -14,6 +14,7 @@ import com.facebook.stetho.Stetho
 import com.orhanobut.hawk.Hawk
 import es.dmoral.toasty.Toasty
 import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 
 class BaseApplication : MultiDexApplication(), Application.ActivityLifecycleCallbacks {
@@ -46,6 +47,7 @@ class BaseApplication : MultiDexApplication(), Application.ActivityLifecycleCall
 
         // Koin
         startKoin {
+//            androidLogger()     // AndroidLogger를 Koin logger로 사용합니다. (에러)
             androidContext(this@BaseApplication)
 
             // 사용할 Module 등록

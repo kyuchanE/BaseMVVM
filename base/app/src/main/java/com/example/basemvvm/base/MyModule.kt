@@ -4,6 +4,7 @@ import com.example.basemvvm.BuildConfig
 import com.example.basemvvm.base.BaseViewModel
 import com.example.basemvvm.model.BasicApi
 import com.example.basemvvm.utils.API
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -80,9 +81,17 @@ val retrofitModule = module {
 
 val viewModel = module {
 
-    factory {
+    // ViewModel의 경우 선언하고 주입 받는 방법이 일반적인 클래스와 조금 다릅니다.
+    // viewModel 키워드로 모듈을 등록하면 Koin이 해당 ViewModel을 ViewModelFactory에 등록하고 현재 컴포넌트와 바인딩합니다.
+    // 주입 받을 때도 ViewModelFactory에서 해당 ViewModel 객체를 불러옵니다.
+    viewModel {
         ExKoinVM()
     }
+
+//    factory {
+//        ExKoinVM()
+//    }
+
 }
 
 
