@@ -1,5 +1,6 @@
 package com.example.basemvvm.ex_koin
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -10,6 +11,7 @@ import com.example.basemvvm.R
 import com.example.basemvvm.base.BaseActivity
 import com.example.basemvvm.base.BaseViewModel
 import com.example.basemvvm.databinding.ActivityExKoinBinding
+import com.example.basemvvm.ex_koin.MWT.MwtMain
 import com.example.basemvvm.model.BasicApi
 import com.example.basemvvm.utils.L
 import org.koin.android.ext.android.get
@@ -95,6 +97,10 @@ class ExKoinActivity : BaseActivity<ActivityExKoinBinding>() {
                 if (drwno.isNotEmpty()) {
                     viewModel.testApi(drwno)
                 }
+            }
+            // MWT
+            R.id.btn_mwt -> {
+                startActivity(Intent(this, MwtMain::class.java))
             }
         }
     }
