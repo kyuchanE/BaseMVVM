@@ -31,6 +31,8 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
@@ -91,6 +93,9 @@ abstract class BaseActivity<B: ViewDataBinding> : AppCompatActivity() {
         binding = bind(layoutId)
         binding.setOnEvents()
 
+        // eventbus register
+        EventBus.getDefault().register(this)
+
         loadingBinding = bindView(R.layout.loading)
         (binding.root as ViewGroup).addView(
             loadingBinding.root,
@@ -149,6 +154,9 @@ abstract class BaseActivity<B: ViewDataBinding> : AppCompatActivity() {
 
         super.onDestroy()
         rxLifeCycle.onNext(ActivityEvent.DESTROY)
+
+        // eventbus unregister
+        EventBus.getDefault().unregister(this)
     }
 
     open fun initViews() {}
@@ -485,5 +493,13 @@ abstract class BaseActivity<B: ViewDataBinding> : AppCompatActivity() {
         if (BuildConfig.DEV) {
             L.e(t)
         }
+    }
+
+    /**
+     * 이벤트 버스 버그를 막기위한 메소드
+     * greenrobot 이벤트 버스는 기본적으로 Subscribe 메소드가 하나라도 작성되어있어야 함
+     */
+    @Subscribe
+    fun eventbus(activity: BaseActivity<B>) {
     }
 }

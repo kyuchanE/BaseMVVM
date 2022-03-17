@@ -12,12 +12,15 @@ import androidx.core.content.ContextCompat
 import androidx.core.text.isDigitsOnly
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.example.basemvvm.base.BaseActivity
+import com.example.basemvvm.custom.adapter.ViewPager2FragmentAdapter
 import com.example.basemvvm.custom.glide.GlideApp
 import com.google.gson.*
 import com.jaychang.st.SimpleText
@@ -113,6 +116,10 @@ fun <T : ViewDataBinding> Activity.bind(layoutId: Int): T {
 }
 
 fun <T : ViewDataBinding> Activity.bindView(layoutId: Int, parent: ViewGroup? = null, attachToRoot: Boolean = false): T {
+    return DataBindingUtil.inflate(layoutInflater, layoutId, parent, attachToRoot)
+}
+
+fun <T : ViewDataBinding> Fragment.bindView(layoutId: Int, parent: ViewGroup? = null, attachToRoot: Boolean = false): T {
     return DataBindingUtil.inflate(layoutInflater, layoutId, parent, attachToRoot)
 }
 
@@ -651,4 +658,32 @@ fun ImageView.loadCircle(url: String): ImageView {
                 .into(this)
     }
     return this
+}
+
+////////////////////////////// ViewPager2 //////////////////////////////
+fun ViewPager2.setItems(items: List<Fragment>, action: (position: Int, item: Fragment) -> Unit = { _, _ -> }) {
+    activity?.let {
+        offscreenPageLimit = items.size
+        adapter = ViewPager2FragmentAdapter(it, items, action)
+    }
+}
+
+fun ViewPager2.overScrollModeNever() {
+    // ViewPager2 overScrollMode 오류 현상 대응
+    (getChildAt(0) as RecyclerView).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+}
+
+fun <T : Section> ViewPager2.addSection(action: () -> T): T {
+    val section = action()
+
+    adapter?.let {
+        (it as SectionedRecyclerViewAdapter).addSection(section)
+        adapter!!.notifyDataSetChanged()
+    } ?: run {
+        val sectionedAdapter = SectionedRecyclerViewAdapter()
+        sectionedAdapter.addSection(section)
+        adapter = sectionedAdapter
+    }
+
+    return section
 }
