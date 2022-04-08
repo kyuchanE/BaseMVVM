@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.annimon.stream.Stream
 import com.example.basemvvm.base.BaseViewModel
+import com.example.basemvvm.utils.API
 import com.example.basemvvm.utils.L
 import com.google.gson.JsonObject
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -18,7 +19,7 @@ class ExKoinVM : BaseViewModel() {
 
     fun testApi(drwNo: String) {
         addDisposable(
-            getRetrofit()?.get(
+            API.basicApi.get(
                 "common.do",
                 mutableMapOf(
                     "method" to "getLottoNumber",

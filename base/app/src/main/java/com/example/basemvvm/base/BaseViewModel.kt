@@ -7,8 +7,6 @@ import io.reactivex.disposables.Disposable
 
 open class BaseViewModel() : ViewModel() {
 
-    private lateinit var retrofitClient: BasicApi
-
     /**
      * RxJava 의 observing 을 위한 부분.
      * addDisposable 을 이용하여 추가하기만 하면 된다
@@ -41,10 +39,5 @@ open class BaseViewModel() : ViewModel() {
         super.onCleared()
     }
 
-    fun setRetrofit(client: BasicApi) {
-        retrofitClient = client
-    }
-
-    protected fun getRetrofit(): BasicApi = retrofitClient
 
 }

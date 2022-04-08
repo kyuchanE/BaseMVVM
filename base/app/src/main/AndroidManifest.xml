@@ -13,7 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BaseMVVM"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ex_koin.MWT.MwtMain"></activity>
         <activity android:name=".ex_koin.ExKoinActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

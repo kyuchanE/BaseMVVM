@@ -14,8 +14,6 @@ import com.ihsanbal.logging.LoggingInterceptor
 import com.itkacher.okhttpprofiler.OkHttpProfilerInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.internal.platform.Platform
-import org.koin.android.ext.android.inject
-import org.koin.experimental.property.inject
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
