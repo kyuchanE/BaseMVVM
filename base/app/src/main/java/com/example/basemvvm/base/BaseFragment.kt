@@ -45,7 +45,7 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = inflater.bind(layoutId, container)
         binding.setOnEvents()
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = this           // LiveData를 사용한다면 아래와 같이 lifecycleOwner를 설정해줘야 합니다.
 
         // 이벤트 버스 등록
         EventBus.getDefault().register(this)
