@@ -3,7 +3,7 @@
 
     <data>
         <variable
-            name="viewModel"
+            name="vm"
             type="com.example.basemvvm.ex_koin.ExKoinVM" />
 
         <variable
@@ -12,6 +12,10 @@
 
         <variable
             name="num"
+            type="String" />
+
+        <variable
+            name="searchStr"
             type="String" />
     </data>
 
@@ -28,7 +32,8 @@
             android:layout_height="wrap_content"
             android:text="retrofit2"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            android:onClick="@{() -> vm.testApi(searchStr)}"/>
 
         <Button
             android:id="@+id/btn_mwt"

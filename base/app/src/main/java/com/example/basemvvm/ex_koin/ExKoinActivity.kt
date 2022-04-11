@@ -3,9 +3,13 @@ package com.example.basemvvm.ex_koin
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -26,9 +30,26 @@ class ExKoinActivity : BaseActivity<ActivityExKoinBinding>() {
         super.onCreate(savedInstanceState)
 
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ExKoinVM::class.java)
+        binding.vm = viewModel
 
         setDataObserve()
+        initViews()
 
+    }
+
+    override fun initViews() {
+        super.initViews()
+
+        binding.etDrwno.addTextChangedListener(object: TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
+
+            override fun afterTextChanged(s: Editable?) {
+                binding.searchStr = s.toString()
+            }
+
+        })
     }
 
     override fun onBtnEvents(v: View) {
@@ -36,11 +57,11 @@ class ExKoinActivity : BaseActivity<ActivityExKoinBinding>() {
         when (v.id) {
             // Retrofit2 테스트
             R.id.btn_retrofit -> {
-                L.d("ExKoinActivity btn_retrofit OnClick >> ")
-                val drwno = binding.etDrwno.text.toString()
-                if (drwno.isNotEmpty()) {
-                    viewModel.testApi(drwno)
-                }
+//                L.d("ExKoinActivity btn_retrofit OnClick >> ")
+//                val drwno = binding.etDrwno.text.toString()
+//                if (drwno.isNotEmpty()) {
+//                    viewModel.testApi(drwno)
+//                }
             }
             // MWT
             R.id.btn_mwt -> {
