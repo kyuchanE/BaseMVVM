@@ -65,7 +65,7 @@ class ExKoinActivity : BaseActivity<ActivityExKoinBinding>() {
             }
             // MWT
             R.id.btn_mwt -> {
-
+                startActivity(Intent(this, ExLottoActivity::class.java))
             }
         }
     }
@@ -80,10 +80,12 @@ class ExKoinActivity : BaseActivity<ActivityExKoinBinding>() {
          *  사용 시 - kotlin 1.3.x 버전까지는 Observer을 명시해야 한다.
          */
         viewModel.lottoLiveData.observe(this, Observer {
+            L.d("@@@@@@ EXKoinActivity lottoLiveData observe")
             binding.drwtno1 = it.get("drwtNo1").toString()
         })
 
         viewModel.testLiveData.observe(this, Observer {
+            L.d("@@@@@@ EXKoinActivity testLiveData observe")
             binding.num = it.toString()
         })
 
