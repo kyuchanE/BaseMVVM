@@ -1,15 +1,19 @@
-package com.example.basemvvm.ex_koin
+package com.example.basemvvm.ex_koin.koin
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.annimon.stream.Stream
 import com.example.basemvvm.base.BaseViewModel
+import com.example.basemvvm.model.BasicApi
 import com.example.basemvvm.utils.L
 import com.google.gson.JsonObject
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class ExKoinVM : BaseViewModel() {
+
+// Activity 이외의 장소에서 inject 를 하려면 KoinComponent 를 반드시 implement 로 추가해주어야 한다.
+//
+class ExKoinVM(private val baseApi: BasicApi) : BaseViewModel() {
     private var lottoData = MutableLiveData<JsonObject>()
     private var testData = MutableLiveData<String>()
 
@@ -18,7 +22,7 @@ class ExKoinVM : BaseViewModel() {
 
     fun testApi(drwNo: String) {
         addDisposable(
-            getRetrofit()?.get(
+            baseApi.get(
                 "common.do",
                 mutableMapOf(
                     "method" to "getLottoNumber",

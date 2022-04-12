@@ -1,25 +1,23 @@
-package com.example.basemvvm.ex_koin
+package com.example.basemvvm.ex_koin.koin
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
 import androidx.lifecycle.Observer
 import com.example.basemvvm.R
 import com.example.basemvvm.base.BaseActivity
-import com.example.basemvvm.base.BaseViewModel
 import com.example.basemvvm.databinding.ActivityExKoinBinding
+import com.example.basemvvm.di.A
+import com.example.basemvvm.di.B
+import com.example.basemvvm.di.BB
+import com.example.basemvvm.di.C
 import com.example.basemvvm.ex_koin.MWT.MwtMain
-import com.example.basemvvm.model.BasicApi
+import com.example.basemvvm.ex_koin.lotto.ExLottoActivity
 import com.example.basemvvm.utils.L
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.experimental.property.inject
 import org.koin.ext.getOrCreateScope
-import org.koin.ext.scope
 
 class ExKoinActivity : BaseActivity<ActivityExKoinBinding>() {
 
@@ -41,7 +39,6 @@ class ExKoinActivity : BaseActivity<ActivityExKoinBinding>() {
     //    val scopeB : B = scopeA.scope.get()
     //    val scopeC : C = scopeA.scope.get()
 
-    val retrofitClient : BasicApi by inject()
 //    val viewModel : ExKoinVM = get()
 
     // Fragment -> 2개 이상의 View가 ViewModel을 공유할 경우, shareViewModel을 사용하면 됩니다.각각 by viewModel() 대신, by sharedViewModel()로 바꾸어 주입해줍니다.
@@ -67,8 +64,6 @@ class ExKoinActivity : BaseActivity<ActivityExKoinBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.setRetrofit(retrofitClient)
-
         L.d("bb_inject1 name is ${bb_inject1.name()}")
         L.d("bb_inject2 name is ${bb_inject2.name()}")
 
@@ -84,7 +79,6 @@ class ExKoinActivity : BaseActivity<ActivityExKoinBinding>() {
         L.d("after close() scopeC name is ${scopeC.name()}")
 
         setDataObserve()
-
     }
 
     override fun onBtnEvents(v: View) {
@@ -100,7 +94,7 @@ class ExKoinActivity : BaseActivity<ActivityExKoinBinding>() {
             }
             // MWT
             R.id.btn_mwt -> {
-                startActivity(Intent(this, MwtMain::class.java))
+                startActivity(Intent(this, ExLottoActivity::class.java))
             }
         }
     }
@@ -115,10 +109,12 @@ class ExKoinActivity : BaseActivity<ActivityExKoinBinding>() {
          *  사용 시 - kotlin 1.3.x 버전까지는 Observer을 명시해야 한다.
          */
         viewModel.lottoLiveData.observe(this, Observer {
+            L.d("2@@@@@@@@@ ExKoinActivity lottoLiveData observe")
             binding.drwtno1 = it.get("drwtNo1").toString()
         })
 
         viewModel.testLiveData.observe(this, Observer {
+            L.d("2@@@@@@@@@ ExKoinActivity testLiveData observe")
             binding.num = it.toString()
         })
 

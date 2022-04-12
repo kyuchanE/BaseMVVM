@@ -4,12 +4,12 @@ import android.app.Activity
 import android.app.Application
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.webkit.WebView
 import androidx.multidex.MultiDexApplication
 import com.blankj.utilcode.util.Utils
 import com.bumptech.glide.Glide
 import com.example.basemvvm.BuildConfig
+import com.example.basemvvm.di.*
 import com.example.basemvvm.ex_koin.*
 import com.example.basemvvm.utils.API
 import com.facebook.stetho.Stetho
@@ -17,12 +17,9 @@ import com.orhanobut.hawk.Hawk
 import es.dmoral.toasty.Toasty
 import org.greenrobot.eventbus.Subscribe
 import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import java.io.*
-import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.system.exitProcess
 
 class BaseApplication : MultiDexApplication(), Application.ActivityLifecycleCallbacks {
     var mainActivityLive = false
@@ -53,25 +50,25 @@ class BaseApplication : MultiDexApplication(), Application.ActivityLifecycleCall
             .apply()
 
         // Koin
-//        startKoin {
-////            androidLogger()     // AndroidLogger를 Koin logger로 사용합니다. (에러)
-//            androidContext(this@BaseApplication)
-//
-//            // 사용할 Module 등록
-//            // 복수개(여러개) 모듈 등록 시
-//            // modules(a_Module, b_Module, c_Module)
-//            //
-//            // moduleA는 ComponentA 객체를 생성하고 ModuleB는 ComponentB 객체를 생성하는데 ComponentA 객체가 필요
-//            // 2개의 Module 을 모두 사용등록을 하면 ComponentB 객체 요쳥 시 Koin 은 ModuleB에게 ModuleA를 통해 ComponentA 객체를 주입해주고 ComponentB 객체를 생성하여 의존성 주입을 완료합니다
-//            // 이렇게 가능한 이유는 Koin 의 지연초기화 방식으로 Module 등록 시 인스턴스가 즉시 생성되는게 아닌, 요청 시 생성하므로 여러 Module 들을 순회하며 서로 상호운용이 가능합니다
-//            modules(
-//                moduleA,
-//                moduleB,
-//                typeQualifierModule,
-//                retrofitModule,
-//                viewModel
-//            )
-//        }
+        startKoin {
+//            androidLogger()     // AndroidLogger를 Koin logger로 사용합니다. (에러)
+            androidContext(this@BaseApplication)
+
+            // 사용할 Module 등록
+            // 복수개(여러개) 모듈 등록 시
+            // modules(a_Module, b_Module, c_Module)
+            //
+            // moduleA는 ComponentA 객체를 생성하고 ModuleB는 ComponentB 객체를 생성하는데 ComponentA 객체가 필요
+            // 2개의 Module 을 모두 사용등록을 하면 ComponentB 객체 요쳥 시 Koin 은 ModuleB에게 ModuleA를 통해 ComponentA 객체를 주입해주고 ComponentB 객체를 생성하여 의존성 주입을 완료합니다
+            // 이렇게 가능한 이유는 Koin 의 지연초기화 방식으로 Module 등록 시 인스턴스가 즉시 생성되는게 아닌, 요청 시 생성하므로 여러 Module 들을 순회하며 서로 상호운용이 가능합니다
+            modules(
+                moduleA,
+                moduleB,
+                typeQualifierModule,
+                activityModule,
+                apiModule,
+            )
+        }
 
         // 비정상 종료시 앱 로그 남기기
 //        Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler())
