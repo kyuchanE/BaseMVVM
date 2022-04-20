@@ -32,13 +32,14 @@
 
                     <ImageView
                         android:id="@+id/iv_face"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
+                        android:layout_width="350dp"
+                        android:layout_height="350dp"
                         android:src="@drawable/ic_baseline_face_24"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginTop="20dp"/>
+                        android:layout_marginTop="20dp"
+                        android:transitionName="iv_android"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"

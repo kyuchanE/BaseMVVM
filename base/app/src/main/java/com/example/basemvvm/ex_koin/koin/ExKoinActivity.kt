@@ -3,6 +3,8 @@ package com.example.basemvvm.ex_koin.koin
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Observer
 import com.example.basemvvm.R
 import com.example.basemvvm.base.BaseActivity
@@ -18,6 +20,7 @@ import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.ext.getOrCreateScope
+import androidx.core.util.Pair
 
 class ExKoinActivity : BaseActivity<ActivityExKoinBinding>() {
 
@@ -92,9 +95,17 @@ class ExKoinActivity : BaseActivity<ActivityExKoinBinding>() {
                     viewModel.testApi(drwno)
                 }
             }
+            // Lotto
+            R.id.btn_lotto -> {
+                startActivity(Intent(this, ExLottoActivity::class.java))
+            }
             // MWT
             R.id.btn_mwt -> {
-                startActivity(Intent(this, ExLottoActivity::class.java))
+                val pair1 : Pair<View, String> = Pair(binding.ivTransition, binding.ivTransition.transitionName)
+                val mwtIntent = Intent(this, MwtMain::class.java)
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, pair1)
+                ActivityCompat.startActivity(this, mwtIntent, options.toBundle())
+
             }
         }
     }

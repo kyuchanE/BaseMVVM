@@ -2,6 +2,7 @@ package com.example.basemvvm.ex_koin.MWT
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.util.Pair
 import com.example.basemvvm.R
 import com.example.basemvvm.base.BaseActivity
 import com.example.basemvvm.databinding.ActivityMwtMainBinding
